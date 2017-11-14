@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <TextView
+        android:id="@+id/list_item_geofence_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/list_item_switch"
+        android:layout_alignLeft="@+id/list_item_geofence_latlong"
+        android:layout_alignStart="@+id/list_item_geofence_latlong" />
+
+    <Switch
+        android:id="@+id/list_item_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выключен"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginTop="14dp"
+        />
+
+    <TextView
+        android:id="@+id/list_item_geofence_latlong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/list_item_switch"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:text="Координаты" />
+</RelativeLayout>
