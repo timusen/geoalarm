@@ -38,6 +38,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 
+import dagger.android.AndroidInjection;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -103,7 +105,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startService();
             }
         });*/
-
     }
 
     @Override
