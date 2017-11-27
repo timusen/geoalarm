@@ -1,4 +1,4 @@
-package com.chadov.getalarm;
+package com.chadov.getalarm.model;
 
 import java.util.StringTokenizer;
 import java.util.UUID;

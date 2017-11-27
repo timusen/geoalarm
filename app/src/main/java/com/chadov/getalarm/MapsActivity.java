@@ -18,9 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.chadov.getalarm.model.Geofence;
+import com.chadov.getalarm.ui.maps.MapsPresenter;
+import com.chadov.getalarm.ui.maps.MapsView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -38,14 +40,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
-        GeofenceListFragment.OnGeofenceSelectedListener
+        GeofenceListFragment.OnGeofenceSelectedListener,
+        MapsView
 {
+    @Inject
+    public MapsPresenter mMapsPresenter;
+
 
     private static final String TAG = "MainActivity";
     private com.google.android.gms.location.LocationListener listener;
@@ -63,6 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -257,6 +266,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onGeofenceSelected(Geofence geofence) {
+        selectGeofence(geofence);
+    }
+
+    public void selectGeofence(Geofence geofence)
+    {
         LatLng point = new LatLng(geofence.getLatitude(), geofence.getLongitude());
         mMarker.setTitle(geofence.getName());
         mMarker.setPosition(point);
@@ -264,5 +278,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (mShadow!=null) mShadow.remove();
         if (geofence.isActive())
             mShadow = mMap.addPolygon(MapHelper.createPolygonWithCircle(this, point, geofence.getRadius()));
+
     }
 }

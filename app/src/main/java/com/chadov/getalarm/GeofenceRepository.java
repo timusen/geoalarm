@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.chadov.getalarm.data.DbContract;
 import com.chadov.getalarm.data.DbHelper;
+import com.chadov.getalarm.model.Geofence;
 
 import java.util.ArrayList;
 import java.util.List;

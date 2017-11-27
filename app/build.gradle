@@ -30,8 +30,15 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.dagger:dagger-android:2.13'
-    compile 'com.google.dagger:dagger-android-support:2.13' // if you use the support libraries
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
+
+    //Dagger
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    //Dagger-Android
+    compile 'com.google.dagger:dagger-android:2.11'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    compile 'com.google.dagger:dagger-android-support:2.11'
+
     testCompile 'junit:junit:4.12'
 }
