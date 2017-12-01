@@ -1,6 +1,7 @@
 package com.chadov.getalarm.ui.maps;
 
 import com.chadov.getalarm.MapsActivity;
+import com.chadov.getalarm.model.GeofenceRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,7 +20,7 @@ public class MapsActivityModule {
     }
 
     @Provides
-    MapsPresenter provideMainPresenter(MapsView mapsView){
-        return new MapsPresenterImpl(mapsView);
+    MapsPresenter provideMainPresenter(MapsView mapsView, GeofenceRepository repository){
+        return new MapsPresenterImpl(mapsView, repository);
     }
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.chadov.getalarm.model.GeofenceRepositoryImpl;
 import com.chadov.getalarm.model.Geofence;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class GeofenceListFragment extends Fragment {
     }
 
     private void updateUI() {
-        GeofenceRepository crimeLab = GeofenceRepository.get(getActivity());
+        GeofenceRepositoryImpl crimeLab = new GeofenceRepositoryImpl(getActivity());
         List<Geofence> geofences = crimeLab.getGeofences();
         mAdapter = new GeofenceAdapter(geofences);
         mGeofenceRecyclerView.setAdapter(mAdapter);

@@ -1,5 +1,8 @@
 package com.chadov.getalarm.ui.maps;
 
+import com.chadov.getalarm.model.Geofence;
+import com.chadov.getalarm.model.GeofenceRepository;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -10,16 +13,17 @@ import dagger.android.AndroidInjection;
 
 public class MapsPresenterImpl implements MapsPresenter {
 
-    @Inject
     public MapsView mMapsView;
+    public GeofenceRepository mRepository;
 
-    public MapsPresenterImpl(MapsView mapsView)
-    {
+    @Inject
+    public MapsPresenterImpl(MapsView mapsView, GeofenceRepository repository)    {
         mMapsView = mapsView;
+        mRepository = repository;
     }
 
-    public void addNewGeofence()
+    public void addNewGeofence(Geofence geofence)
     {
-
+        mRepository.addNew(geofence);
     }
 }

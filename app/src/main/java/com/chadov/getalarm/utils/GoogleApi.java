@@ -32,7 +32,8 @@ public class GoogleApi implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
-    public GoogleApi() {
+    public GoogleApi(Context context) {
+        mContext = context;
         initialize();
     }
 

@@ -161,9 +161,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, Intent data)   {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                Place place = PlacePicker.getPlace( this, data);
+
+                Geofence geofence = new Geofence(place.getName().toString(), place.getLatLng().latitude, place.getLatLng().longitude, 100 );
+
+                mMapsPresenter.addNewGeofence(geofence);
             }
         }
     }

@@ -3,7 +3,10 @@ package com.chadov.getalarm.dagger;
 import android.app.Application;
 import android.content.Context;
 
+import com.chadov.getalarm.model.GeofenceRepository;
+import com.chadov.getalarm.model.GeofenceRepositoryImpl;
 import com.chadov.getalarm.ui.maps.MapsActivityComponent;
+import com.chadov.getalarm.utils.GoogleApi;
 
 import javax.inject.Singleton;
 
@@ -23,4 +26,12 @@ public class AppModule {
     Context provideContext(Application application) {
         return application;
     }
+
+    @Provides
+    @Singleton
+    GoogleApi googleApi(Context context) { return new GoogleApi(context);}
+
+    @Provides
+    @Singleton
+    GeofenceRepository geofenceRepository(Context context) { return new GeofenceRepositoryImpl(context); }
 }
