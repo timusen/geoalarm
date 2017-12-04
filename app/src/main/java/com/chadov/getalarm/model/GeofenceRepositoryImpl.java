@@ -1,5 +1,6 @@
 package com.chadov.getalarm.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,17 +24,14 @@ public class GeofenceRepositoryImpl implements GeofenceRepository {
     private List<Geofence> mGeofences;
 
     @Inject
-    public Context context;
-
-    @Inject
     public GeofenceRepositoryImpl(Context context) {
         mDb = new DbHelper(context);
         mGeofences = new ArrayList<>();
 
-        Initialize();
+        //SampleInitialize();
     }
 
-    private void Initialize() {
+    private void SampleInitialize() {
         addNew(new Geofence("Московская дача", 56.540358, 38.036717, 3));
         addNew(new Geofence("Лесная дача", 56.15638889, 45.21583333, 10));
     }
@@ -106,6 +104,23 @@ public class GeofenceRepositoryImpl implements GeofenceRepository {
     }
 
     public void addNew(Geofence geofence) {
+        SQLiteDatabase db = mDb.getWritableDatabase();
+
+        //Создадим экземпляр класса ContentValues для передачи в метод insert
+        ContentValues geo = new ContentValues();
+        geo.put(DbContract.LocationEntry.COLUMN_NAME, geofence.getName());
+        geo.put(DbContract.LocationEntry.COLUMN_LATITUDE, geofence.getLatitude());
+        geo.put(DbContract.LocationEntry.COLUMN_LONGITUDE, geofence.getLongitude());
+        geo.put(DbContract.LocationEntry.COLUMN_RADIUS, geofence.getRadius());
+        geo.put(DbContract.LocationEntry.COLUMN_ACTIVE, geofence.isActive() ? DbContract.LocationEntry.ACTIVE_ON : DbContract.LocationEntry.ACTIVE_OFF);
+
+
+        try {
+            //Метод insert возвращает long с индексом записанной записи, который можно куда-нибудь применить
+            long insertID = db.insert(DbContract.LocationEntry.TABLE_NAME, null, geo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mGeofences.add(geofence);
     }
 }

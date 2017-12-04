@@ -1,14 +1,16 @@
-package com.chadov.getalarm;
+package com.chadov.getalarm.utils;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+
+import com.chadov.getalarm.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-final class MapHelper {
+public final class MapHelper {
     static final LatLng LA_LOCATION = new LatLng(34.052235, -118.243683);
 
     /**
@@ -20,7 +22,7 @@ final class MapHelper {
         //no instance
     }
 
-    static PolygonOptions createPolygonWithCircle(Context context, LatLng center, int radius) {
+    public static PolygonOptions createPolygonWithCircle(Context context, LatLng center, int radius) {
 
         return new PolygonOptions()
                 .fillColor(ContextCompat.getColor(context, R.color.grey_500_transparent))

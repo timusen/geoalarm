@@ -2,7 +2,7 @@ package com.chadov.getalarm.dagger;
 
 import android.app.Activity;
 
-import com.chadov.getalarm.MapsActivity;
+import com.chadov.getalarm.ui.maps.MapsActivity;
 import com.chadov.getalarm.ui.maps.MapsActivityComponent;
 
 import dagger.Binds;

@@ -1,5 +1,6 @@
-package com.chadov.getalarm;
+package com.chadov.getalarm.ui.maps.listfragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,17 +11,35 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.chadov.getalarm.R;
 import com.chadov.getalarm.model.GeofenceRepositoryImpl;
 import com.chadov.getalarm.model.Geofence;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 
-public class GeofenceListFragment extends Fragment {
+import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
+
+
+public class GeofenceListFragment extends DaggerFragment implements GeofenceListFragmentView {
+
+    @Inject
+    GeofenceListFragmentPresenter mGeofenceListFragmentPresenter;
 
     private RecyclerView mGeofenceRecyclerView;
     private GeofenceAdapter mAdapter;
 
+    public static GeofenceListFragment newInstance() {
+        Bundle args = new Bundle();
+        GeofenceListFragment fragment = new GeofenceListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,11 +53,22 @@ public class GeofenceListFragment extends Fragment {
         return view;
     }
 
+//    @Override
+//    public void onAttach(Context context) {
+//        AndroidSupportInjection.inject(this);
+//        super.onAttach(context);
+//    }
+
     private void updateUI() {
         GeofenceRepositoryImpl crimeLab = new GeofenceRepositoryImpl(getActivity());
         List<Geofence> geofences = crimeLab.getGeofences();
         mAdapter = new GeofenceAdapter(geofences);
         mGeofenceRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void updateList() {
+
     }
 
     public interface OnGeofenceSelectedListener {

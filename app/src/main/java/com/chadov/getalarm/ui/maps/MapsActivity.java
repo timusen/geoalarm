@@ -1,4 +1,4 @@
-package com.chadov.getalarm;
+package com.chadov.getalarm.ui.maps;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,11 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
+import com.chadov.getalarm.GeoService;
+import com.chadov.getalarm.ui.maps.listfragment.GeofenceListFragment;
+import com.chadov.getalarm.R;
 import com.chadov.getalarm.model.Geofence;
-import com.chadov.getalarm.ui.maps.MapsPresenter;
-import com.chadov.getalarm.ui.maps.MapsView;
+import com.chadov.getalarm.utils.MapHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -43,14 +44,23 @@ import com.google.android.gms.maps.model.Polygon;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.DaggerAppCompatActivity;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class MapsActivity extends DaggerAppCompatActivity implements
+        //HasSupportFragmentInjector,
+        OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
         GeofenceListFragment.OnGeofenceSelectedListener,
         MapsView
 {
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     @Inject
     public MapsPresenter mMapsPresenter;
 
@@ -71,7 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+        //AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -82,7 +92,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.geofence_recycler_view);
         if (fragment == null) {
-            fragment = new GeofenceListFragment();
+            fragment = GeofenceListFragment.newInstance();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
@@ -282,4 +292,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mShadow = mMap.addPolygon(MapHelper.createPolygonWithCircle(this, point, geofence.getRadius()));
 
     }
+
+//    @Override
+//    public AndroidInjector<Fragment> supportFragmentInjector() {
+//        return fragmentDispatchingAndroidInjector;
+//    }
+
 }
