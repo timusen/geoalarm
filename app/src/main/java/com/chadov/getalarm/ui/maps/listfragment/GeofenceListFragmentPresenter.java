@@ -7,5 +7,7 @@ import com.chadov.getalarm.model.Geofence;
  */
 
 public interface GeofenceListFragmentPresenter {
+    void loadGeofences();
+
     void changeGeofenceState(Geofence geofence, boolean active);
 }

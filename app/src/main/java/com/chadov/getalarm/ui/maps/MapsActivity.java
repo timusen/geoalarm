@@ -284,12 +284,17 @@ public class MapsActivity extends DaggerAppCompatActivity implements
     public void selectGeofence(Geofence geofence)
     {
         LatLng point = new LatLng(geofence.getLatitude(), geofence.getLongitude());
-        mMarker.setTitle(geofence.getName());
+        if (geofence.getName() != null)  mMarker.setTitle(geofence.getName());
         mMarker.setPosition(point);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 10));
         if (mShadow!=null) mShadow.remove();
         if (geofence.isActive())
             mShadow = mMap.addPolygon(MapHelper.createPolygonWithCircle(this, point, geofence.getRadius()));
+
+    }
+
+    public void updateGeofenceList()
+    {
 
     }
 

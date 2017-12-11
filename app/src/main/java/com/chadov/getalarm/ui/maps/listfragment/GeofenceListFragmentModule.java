@@ -1,5 +1,6 @@
 package com.chadov.getalarm.ui.maps.listfragment;
 
+import com.chadov.getalarm.model.GeofenceRepository;
 import com.chadov.getalarm.ui.maps.MapsScope;
 import com.google.android.gms.wearable.MessageApi;
 
@@ -21,7 +22,7 @@ public class GeofenceListFragmentModule {
 
     @GeofenceListScope
     @Provides
-    GeofenceListFragmentPresenter provideGeofenceListFragmentPresenter(GeofenceListFragmentView view){
-        return new GeofenceListFragmentPresenterImpl(view);
+    GeofenceListFragmentPresenter provideGeofenceListFragmentPresenter(GeofenceListFragmentView view, GeofenceRepository repository){
+        return new GeofenceListFragmentPresenterImpl(view, repository);
     }
 }

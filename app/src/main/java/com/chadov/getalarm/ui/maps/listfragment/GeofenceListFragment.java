@@ -49,19 +49,14 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
                 .findViewById(R.id.geofence_recycler_view);
         mGeofenceRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
-        updateUI();
+
+        mGeofenceListFragmentPresenter.loadGeofences();
         return view;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        AndroidSupportInjection.inject(this);
-//        super.onAttach(context);
-//    }
 
-    private void updateUI() {
-        GeofenceRepositoryImpl crimeLab = new GeofenceRepositoryImpl(getActivity());
-        List<Geofence> geofences = crimeLab.getGeofences();
+    public void setGeofences(List<Geofence> geofences)
+    {
         mAdapter = new GeofenceAdapter(geofences);
         mGeofenceRecyclerView.setAdapter(mAdapter);
     }
