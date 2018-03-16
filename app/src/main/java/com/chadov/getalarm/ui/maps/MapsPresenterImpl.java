@@ -25,5 +25,6 @@ public class MapsPresenterImpl implements MapsPresenter {
     public void addNewGeofence(Geofence geofence)
     {
         mRepository.addNew(geofence);
+        mMapsView.selectGeofence(geofence);
     }
 }

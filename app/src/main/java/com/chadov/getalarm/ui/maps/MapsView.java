@@ -8,5 +8,7 @@ import com.chadov.getalarm.model.Geofence;
 
 public interface MapsView {
 
+    void updateGeofenceList();
+
     void selectGeofence(Geofence geofence);
 }
