@@ -77,6 +77,11 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
         mGeofenceRecyclerView.setAdapter(mAdapter);
     }
 
+    public void setGeofences(List<Geofence> geofences)
+    {
+
+    }
+
     @Override
     public void updateList() {
 
