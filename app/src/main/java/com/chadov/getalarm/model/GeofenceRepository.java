@@ -11,7 +11,9 @@ public interface GeofenceRepository {
 
     List<Geofence> getGeofences();
 
-    Geofence get(UUID id);
+    //Geofence get(UUID id);
 
     void addNew(Geofence geofence);
+
+    boolean delete(Geofence geofence);
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 public class Geofence {
 
     private UUID mId;
+    private int mDbId;
     private String mName;
     private double mLatitude;
     private double mLongitude;
@@ -26,11 +27,11 @@ public class Geofence {
         mActive = false;
     }
 
-    public UUID getId() {
-        return mId;
+    public int getId() {
+        return mDbId;
     }
-    public void setId(UUID Id) {
-        this.mId = Id;
+    public void setId(int Id) {
+        this.mDbId = Id;
     }
 
     public String getName() {

@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="70dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/list_item_geofence_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textStyle="bold"
-        android:layout_alignTop="@+id/list_item_switch"
-        android:layout_alignLeft="@+id/list_item_geofence_latlong"
-        android:layout_alignStart="@+id/list_item_geofence_latlong" />
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
 
-    <Switch
-        android:id="@+id/list_item_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выключен"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="13dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginTop="14dp"
-        />
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_dialog_close_dark" />
 
-    <TextView
-        android:id="@+id/list_item_geofence_latlong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/list_item_switch"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:text="Координаты" />
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="Delete"
+            android:textColor="#fff"
+            android:textSize="13dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/colorForeground">
+
+        <TextView
+            android:id="@+id/list_item_geofence_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textStyle="bold"
+            android:layout_alignTop="@+id/list_item_switch"
+            android:layout_alignLeft="@+id/list_item_geofence_latlong"
+            android:layout_alignStart="@+id/list_item_geofence_latlong" />
+
+        <Switch
+            android:id="@+id/list_item_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выключен"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginTop="14dp"
+            />
+
+        <TextView
+            android:id="@+id/list_item_geofence_latlong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/list_item_switch"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp"
+            android:text="Координаты" />
+    </RelativeLayout>
+</FrameLayout>

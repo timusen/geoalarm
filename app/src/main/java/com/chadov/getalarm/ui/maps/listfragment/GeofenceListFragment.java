@@ -3,15 +3,20 @@ package com.chadov.getalarm.ui.maps.listfragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.chadov.getalarm.R;
+import com.chadov.getalarm.model.GeofenceRepository;
 import com.chadov.getalarm.model.GeofenceRepositoryImpl;
 import com.chadov.getalarm.model.Geofence;
 
@@ -24,7 +29,7 @@ import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
 
 
-public class GeofenceListFragment extends DaggerFragment implements GeofenceListFragmentView {
+public class GeofenceListFragment extends DaggerFragment implements GeofenceListFragmentView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener  {
 
     @Inject
     GeofenceListFragmentPresenter mGeofenceListFragmentPresenter;
@@ -49,7 +54,14 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
                 .findViewById(R.id.geofence_recycler_view);
         mGeofenceRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
+        mGeofenceRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mGeofenceRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
         updateUI();
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mGeofenceRecyclerView);
+
         return view;
     }
 
@@ -60,15 +72,45 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
 //    }
 
     private void updateUI() {
-        GeofenceRepositoryImpl crimeLab = new GeofenceRepositoryImpl(getActivity());
-        List<Geofence> geofences = crimeLab.getGeofences();
-        mAdapter = new GeofenceAdapter(geofences);
+        GeofenceRepositoryImpl geoLab = new GeofenceRepositoryImpl(getActivity());
+        mAdapter = new GeofenceAdapter(geoLab);
         mGeofenceRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void updateList() {
 
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof GeofenceHolder) {
+            // get the removed item name to display it in snack bar
+            //String name = cartList.get(viewHolder.getAdapterPosition()).getName();
+
+            // backup of removed item for undo purpose
+            //final Item deletedItem = cartList.get(viewHolder.getAdapterPosition());
+            //final int deletedIndex = viewHolder.getAdapterPosition();
+
+            // remove the item from recycler view
+            mAdapter.removeItem(viewHolder.getAdapterPosition());
+
+            /*
+            // showing snack bar with Undo option
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // undo is selected, restore the deleted item
+                    mAdapter.restoreItem(deletedItem, deletedIndex);
+                }
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
+            */
+        }
     }
 
     public interface OnGeofenceSelectedListener {
@@ -81,12 +123,15 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
         callback.onGeofenceSelected(geofence);
     }
 
-    private class GeofenceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class GeofenceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public Geofence mGeofence;
+
         public TextView mTitleTextView;
         public TextView mLatLngTextView;
         public Switch mSwitch;
+
+        public RelativeLayout mViewBackground, mViewForeground;
 
         public GeofenceHolder(View itemView) {
             super(itemView);
@@ -95,6 +140,9 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
             mLatLngTextView = (TextView) itemView.findViewById(R.id.list_item_geofence_latlong);
             mSwitch = (Switch)itemView.findViewById(R.id.list_item_switch);
             mSwitch.setOnClickListener(this);
+
+            mViewBackground = (RelativeLayout)itemView.findViewById(R.id.view_background);
+            mViewForeground = (RelativeLayout)itemView.findViewById(R.id.view_foreground);
         }
 
         public void bindGeofence(Geofence geo) {
@@ -126,10 +174,14 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
     }
 
 
-    private class GeofenceAdapter extends RecyclerView.Adapter<GeofenceHolder> {
+    public class GeofenceAdapter extends RecyclerView.Adapter<GeofenceHolder> {
+        GeofenceRepository mGeofenceRepository;
         private List<Geofence> mGeofences;
-        public GeofenceAdapter(List<Geofence> geofences) {
-            mGeofences = geofences;
+
+        public GeofenceAdapter(GeofenceRepository geofenceRepository)
+        {
+            mGeofenceRepository = geofenceRepository;
+            mGeofences = mGeofenceRepository.getGeofences();
         }
 
         @Override
@@ -150,6 +202,15 @@ public class GeofenceListFragment extends DaggerFragment implements GeofenceList
         @Override
         public int getItemCount() {
             return mGeofences.size();
+        }
+
+        public void removeItem(int position) {
+            mGeofenceRepository.delete(mGeofences.get(position));
+            mGeofences.remove(position);
+            // notify the item removed by position
+            // to perform recycler view delete animations
+            // NOTE: don't call notifyDataSetChanged()
+            notifyItemRemoved(position);
         }
     }
 

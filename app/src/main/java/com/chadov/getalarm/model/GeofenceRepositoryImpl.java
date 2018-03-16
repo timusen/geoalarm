@@ -43,14 +43,14 @@ public class GeofenceRepositoryImpl implements GeofenceRepository {
         return mGeofences;
     }
 
-    public Geofence get(UUID id) {
+    /*public Geofence get(UUID id) {
         for (Geofence geo : mGeofences) {
             if (geo.getId().equals(id)) {
                 return geo;
             }
         }
         return null;
-    }
+    }*/
 
     private void readGeofences(List<Geofence> geofences) {
         // Создадим и откроем для чтения базу данных
@@ -95,7 +95,9 @@ public class GeofenceRepositoryImpl implements GeofenceRepository {
                 Double currentLong = cursor.getDouble(longitudeColumnIndex);
                 int currentRadius = cursor.getInt(radiusColumnIndex);
 
-                geofences.add(new Geofence(currentName, currentLat, currentLong, currentRadius));
+                Geofence geo = new Geofence(currentName, currentLat, currentLong, currentRadius);
+                geo.setId(currentID);
+                geofences.add(geo);
             }
         } finally {
             // Всегда закрываем курсор после чтения
@@ -122,5 +124,18 @@ public class GeofenceRepositoryImpl implements GeofenceRepository {
             e.printStackTrace();
         }
         mGeofences.add(geofence);
+    }
+
+    public boolean delete(Geofence geofence) {
+        SQLiteDatabase db = mDb.getWritableDatabase();
+        try {
+            //Метод insert возвращает long с индексом записанной записи, который можно куда-нибудь применить
+            long insertID = db.delete(DbContract.LocationEntry.TABLE_NAME,  DbContract.LocationEntry._ID +"=" + geofence.getId(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
     }
 }
